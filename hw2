@@ -7,6 +7,10 @@ trainlabel = np.loadtxt('Downloads/20news-bydate/matlab/train.label')
 testdata = np.loadtxt('Downloads/20news-bydate/matlab/test.data')
 testlable = np.loadtxt('Downloads/20news-bydate/matlab/test.label')
 
+with open('Downloads/vocabulary.txt','r') as f:
+    vocabr = f.read()
+vocabr = vocabr.split()
+
 in_traindata = list(traindata[:,0])
 in_trainlabel = list(trainlabel)
 in_testdata = list(testdata[:,0])
@@ -21,9 +25,19 @@ def split_array(Singrp):
 
 trainlist = list()
 def bulit_array(obj, label):
-    traingroup = np.split(obj, list(np.unique(label)))
-    for ind in unique(obj):
-        trainlist.append(split_array(traingroup[ind]))
+    traingroup = np.split(obj, list(np.unique(obj)))
+    for ind in np.unique(obj):
+        trainlist.append(split_array(traingroup[int(ind)]))
     trainarray = np.array(trainlist)
     return(trainarray)
     
+# smooth and to avoid underflow
+trainArray = bulit_array(traindata, trainlabel)
+
+
+lsmthtrain = np.log(np.add(trainArray, 1))
+
+
+clf = MultinomialNB()
+clf = clf.fit(trainarry, trainlabel)
+
