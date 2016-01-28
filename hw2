@@ -1,0 +1,18 @@
+import numpy as np
+import scipy as py
+from sklearn.naive_bayes import MultinomialNB
+
+traindata = np.loadtxt('Downloads/20news-bydate/matlab/train.data')
+trainlabel = np.loadtxt('Downloads/20news-bydate/matlab/train.label')
+testdata = np.loadtxt('Downloads/20news-bydate/matlab/test.data')
+testlable = np.loadtxt('Downloads/20news-bydate/matlab/test.label')
+
+in_traindata = list(traindata[:,0])
+in_trainlabel = list(trainlabel)
+in_testdata = list(testdata[:,0])
+in_testlabel = list(testlabel)
+
+def bulit_array(obj, label):
+    group = len(np.unique(label))
+    for i in group:
+        
