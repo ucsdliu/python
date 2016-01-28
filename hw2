@@ -12,7 +12,18 @@ in_trainlabel = list(trainlabel)
 in_testdata = list(testdata[:,0])
 in_testlabel = list(testlabel)
 
+def split_array(Singrp):
+    indlist = range(len(vocabr)+1)[1:]
+    lstgrp = list()
+    for i in Singrp[:,1]:
+        indlist[indlist.index(i)] = Singrp[i, 2]
+    return(indlist)
+
+trainlist = list()
 def bulit_array(obj, label):
-    group = len(np.unique(label))
-    for i in group:
-        
+    traingroup = np.split(obj, list(np.unique(label)))
+    for ind in unique(obj):
+        trainlist.append(split_array(traingroup[ind]))
+    trainarray = np.array(trainlist)
+    return(trainarray)
+    
