@@ -11,31 +11,31 @@ with open('Downloads/vocabulary.txt','r') as f:
     vocabr = f.read()
 vocabr = vocabr.split()
 
-in_traindata = list(traindata[:,0])
-in_trainlabel = list(trainlabel)
-in_testdata = list(testdata[:,0])
-in_testlabel = list(testlabel)
 
 def split_array(Singrp):
-    indlist = range(len(vocabr)+1)[1:]
-    lstgrp = list()
+    indlist = [0]*(len(vocabr))
     for i in Singrp[:,1]:
-        indlist[indlist.index(i)] = Singrp[i, 2]
+        indlist[i-1] = Singrp[Singrp[:, 1].index(i),2]
     return(indlist)
 
-trainlist = list()
-def bulit_array(obj, label):
-    traingroup = np.split(obj, list(np.unique(obj)))
-    for ind in np.unique(obj):
-        trainlist.append(split_array(traingroup[int(ind)]))
-    trainarray = np.array(trainlist)
-    return(trainarray)
-    
+
+count = list()
+train = list()
+def bulit_array(obj):
+    for i in np.unique(traindata[:,0]).astype(np.int):
+        count.append(obj[:,0].tolist().count(i))
+    trainarray = np.vsplit(obj, count)
+    for j in len(trainarray):
+        elearray = split_array(trainarray[j])
+        train.append(elearray)
+    trainArray = np.array(train)
+    return(trainArray)
+
 # smooth and to avoid underflow
-trainArray = bulit_array(traindata, trainlabel)
+train = bulit_array(traindata)
 
 
-lsmthtrain = np.log(np.add(trainArray, 1))
+lsmthtrain = np.log(np.add(train, 1))
 
 
 clf = MultinomialNB()
